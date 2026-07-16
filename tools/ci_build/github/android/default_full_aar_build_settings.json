@@ -11,6 +11,7 @@
         "--enable_lto",
         "--android",
         "--parallel",
+        "--cmake_extra_defines onnxruntime_DAWN_FETCH_DEPENDENCIES_VIA_MIRROR_AND_GITHUB=ON",
         "--cmake_generator=Ninja",
         "--build_java",
         "--build_shared_lib",

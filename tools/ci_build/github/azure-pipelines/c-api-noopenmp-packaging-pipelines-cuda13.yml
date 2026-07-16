@@ -157,6 +157,7 @@ extends:
         BuildCommand: >-
           --build_nodejs
           --build_shared_lib
+          --cmake_extra_defines "onnxruntime_DAWN_FETCH_DEPENDENCIES_VIA_MIRROR_AND_GITHUB=ON"
           --cmake_generator "Visual Studio 17 2022"
           --enable_generic_interface
           --enable_onnx_tests
@@ -179,6 +180,7 @@ extends:
           --arm64
           --build_nodejs
           --build_shared_lib
+          --cmake_extra_defines "onnxruntime_DAWN_FETCH_DEPENDENCIES_VIA_MIRROR_AND_GITHUB=ON"
           --cmake_generator "Visual Studio 17 2022"
           --enable_generic_interface
           --enable_onnx_tests

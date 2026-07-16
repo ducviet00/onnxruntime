@@ -30,7 +30,10 @@ stages:
       - template: py-win-webgpu-stage.yml
         parameters:
           PYTHON_VERSION: ${{ python_version }}
-          EP_BUILD_FLAGS: --enable_lto --use_webgpu
+          EP_BUILD_FLAGS: >-
+            --cmake_extra_defines 'onnxruntime_DAWN_FETCH_DEPENDENCIES_VIA_MIRROR_AND_GITHUB=ON'
+            --enable_lto
+            --use_webgpu
 
     - ${{ each python_version in parameters.PythonVersions }}:
       - stage:  MacOS_py_webgpu_Wheels_${{ replace(python_version,'.','_') }}_Build
@@ -40,7 +43,10 @@ stages:
           parameters:
             arch: 'arm64'
             python_version: ${{ python_version }}
-            extra_build_arg: --use_webgpu ${{ parameters.build_py_parameters }}
+            extra_build_arg: >-
+              --cmake_extra_defines 'onnxruntime_DAWN_FETCH_DEPENDENCIES_VIA_MIRROR_AND_GITHUB=ON'
+              --use_webgpu
+              ${{ parameters.build_py_parameters }}
             cmake_build_type: ${{ parameters.cmake_build_type }}
 
     - template: py-linux-webgpu-stage.yml

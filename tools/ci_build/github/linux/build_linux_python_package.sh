@@ -98,7 +98,10 @@ if [ "$BUILD_DEVICE" == "GPU" ]; then
     fi
 fi
 if [ "$BUILD_DEVICE" == "WEBGPU" ]; then
-    BUILD_ARGS+=("--use_webgpu")
+    BUILD_ARGS+=(
+        "--cmake_extra_defines 'onnxruntime_DAWN_FETCH_DEPENDENCIES_VIA_MIRROR_AND_GITHUB=ON'"
+        "--use_webgpu"
+    )
 fi
 
 if [ "$BUILD_DEVICE" == "NPU" ]; then

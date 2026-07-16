@@ -63,4 +63,11 @@ jobs:
   - template: mac-cpu-packaging-steps.yml
     parameters:
       MacosArch: arm64
-      AdditionalBuildFlags: ${{ parameters.AdditionalBuildFlags }} --build_java --build_nodejs --use_coreml --use_webgpu --cmake_extra_defines CMAKE_OSX_ARCHITECTURES=arm64
+      AdditionalBuildFlags: >-
+        ${{ parameters.AdditionalBuildFlags }}
+        --build_java
+        --build_nodejs
+        --cmake_extra_defines "CMAKE_OSX_ARCHITECTURES=arm64"
+        --cmake_extra_defines "onnxruntime_DAWN_FETCH_DEPENDENCIES_VIA_MIRROR_AND_GITHUB=ON"
+        --use_coreml
+        --use_webgpu

@@ -55,22 +55,31 @@ stages:
         package_version: ${{ parameters.package_version }}
         version_file: ${{ parameters.version_file }}
 
-    - script: |
-        set -e -x
-        python3 -m pip install -r '$(Build.SourcesDirectory)/tools/ci_build/github/linux/docker/scripts/requirements.txt'
-        python3 $(Build.SourcesDirectory)/tools/ci_build/build.py \
-          --build_dir $(Build.SourcesDirectory)/build \
-          --use_vcpkg --use_vcpkg_ms_internal_asset_cache \
-          --use_binskim_compliant_compile_flags \
-          --config ${{ parameters.cmake_build_type }} \
-          --enable_onnx_tests \
-          --use_webgpu shared_lib \
-          --wgsl_template static \
+    - bash: |
+        set -euxo pipefail
+        python3 -m pip install -r "${BUILD_SOURCESDIRECTORY}/tools/ci_build/github/linux/docker/scripts/requirements.txt"
+        python3 "${BUILD_SOURCESDIRECTORY}/tools/ci_build/build.py" \
+          --build \
+          --build_dir "${BUILD_SOURCESDIRECTORY}/build" \
+          --cmake_extra_defines "${PLUGINEPVERSIONDEFINE}" \
+          --cmake_extra_defines "CMAKE_OSX_ARCHITECTURES=arm64" \
+          --cmake_extra_defines "onnxruntime_BUILD_UNIT_TESTS=OFF" \
+          --cmake_extra_defines "onnxruntime_DAWN_FETCH_DEPENDENCIES_VIA_MIRROR_AND_GITHUB=ON" \
+          --config "${CMAKE_BUILD_TYPE}" \
           --disable_rtti \
           --enable_lto \
-          --cmake_extra_defines CMAKE_OSX_ARCHITECTURES=arm64 onnxruntime_BUILD_UNIT_TESTS=OFF $(PluginEpVersionDefine) \
-          --update --skip_submodule_sync --build --parallel
+          --enable_onnx_tests \
+          --parallel \
+          --skip_submodule_sync \
+          --update \
+          --use_binskim_compliant_compile_flags \
+          --use_vcpkg \
+          --use_vcpkg_ms_internal_asset_cache \
+          --use_webgpu shared_lib \
+          --wgsl_template static \
       displayName: 'Build WebGPU Plugin'
+      env:
+        CMAKE_BUILD_TYPE: ${{ parameters.cmake_build_type }}
 
     - script: |
         set -e

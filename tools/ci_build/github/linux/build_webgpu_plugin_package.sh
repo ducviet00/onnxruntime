@@ -49,4 +49,5 @@ docker run --rm \
         --use_vcpkg_ms_internal_asset_cache \
         --update \
         --build \
+        --cmake_extra_defines 'onnxruntime_DAWN_FETCH_DEPENDENCIES_VIA_MIRROR_AND_GITHUB=ON' \
         --cmake_extra_defines onnxruntime_BUILD_UNIT_TESTS=OFF ${EXTRA_CMAKE_DEFINES}"

@@ -812,6 +812,15 @@ if (onnxruntime_USE_WEBGPU)
           # Using <SOURCE_DIR> token ensures the correct absolute path regardless of working directory.
           ${CMAKE_COMMAND} -E rm -rf <SOURCE_DIR>/test)
 
+      if(DEFINED onnxruntime_DAWN_FETCH_DEPENDENCIES_VIA_MIRROR_AND_GITHUB AND onnxruntime_DAWN_FETCH_DEPENDENCIES_VIA_MIRROR_AND_GITHUB)
+        set(ONNXRUNTIME_Dawn_PATCH_COMMAND
+          # ado_submodule_refs.patch
+          # - (private) Reference internal mirrors when building in ADO pipelines.
+          "${Patch_EXECUTABLE}" --binary --ignore-whitespace -p1 < "${PROJECT_SOURCE_DIR}/patches/dawn/ado_submodule_refs.patch" &&
+          ${ONNXRUNTIME_Dawn_PATCH_COMMAND}
+        )
+      endif()
+
       onnxruntime_fetchcontent_declare(
         dawn
         URL ${DEP_URL_dawn}
